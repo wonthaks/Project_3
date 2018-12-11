@@ -220,7 +220,12 @@ calculateUpperCase:
 	sw $t5, 0($sp)		#store exponent back into stack
 	sw $t6, 8($sp)		#store sum back into stack
 	jal calculateOutputMain	#then, jump back to calculateOutput loop
-calculateInteger:	
+calculateInteger:
+	li $t0, 48			#if again previous statement did not execute, load 48 into $t0
+	blt $t2, $t0, endOfCal	#branch to calculateInteger if current char > $t0
+	lw $s1, 4($sp)		#load address pointer from stack into register $s1
+	lb $t2, 0($s1)		#load byte from stack into $t2
+	lw $t5, 0($sp)		#load exponent from stack into $t5	
 	
 	lb $t2, 0($s1)			#load byte from stack (character) into $t2
 	li $t0, 32			#load 32 into $t0 to use to compare for space character
