@@ -162,11 +162,12 @@ calculateExponentMain:
 	lw $t8, 0($sp)			#load length into $t8 register
 	beq $t8, $t0, calculateExponentBaseHandle		#if length of string is one, go back to return address
 	
-	li $t0, 1				#load 1 into $t0 to check whether length of string is one
-	beq $t8, $t0, calculateOutput		#if length of string is one, jump to calculateOutput
 	li $t0, 28				#load base-N number to $t0 to calculate exponent (in this case base-28)
-	mult $t5, $t0			#multiply current exponent ($t5) with $t0 to get next
-	mflo $t5	#move whatever is stored now in special register $LO into $t5 (exponent holder register)
+	lw $t5, 4($sp)		#load exponent into $t5
+	mult $t5, $t0			#multiply current exponent in stack with $t0 to get next
+	mflo $t5	#move whatever is stored now in special register $LO into stack (exponent holder place)
+	sw $t5, 4($sp)		#save exponent back into stack
+	
 	addi $t8, $t8, -1			#decrement value in $t8
 	li $t0, 1					#load 0 into $t0 to use to compare with $t8 (length holder register)
 	bgt $t8, $t0, calculateExponent	#if $t8 is still greater than 0, loop again to calculate max exponent
