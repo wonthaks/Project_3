@@ -171,8 +171,9 @@ calculateExponentMain:
 	addi $t8, $t8, -1			#decrement value in $t8
 	sw $t8, 0($sp)			#save length back into stack
 	jal calculateExponentMain	#call back self subprogram to continue calculating exponent
-	
-	j calculateOutput
+calculateExponentBaseHandle:		#base case handler for calculateExponent
+	lw $ra, 8($sp)			#load real return address back to checkLengthAndCalculate
+	jr $ra		#return to caller
 
 calculateOutput:
 	addi $s1, $s1, 1		#increment stack pointer in $s1 
