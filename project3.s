@@ -225,7 +225,12 @@ calculateInteger:
 	blt $t2, $t0, endOfCal	#branch to calculateInteger if current char > $t0
 	lw $s1, 4($sp)		#load address pointer from stack into register $s1
 	lb $t2, 0($s1)		#load byte from stack into $t2
-	lw $t5, 0($sp)		#load exponent from stack into $t5	
+	lw $t5, 0($sp)		#load exponent from stack into $t5
+	lw $t6, 8($sp)		#load sum from stack into $t6
+	addi $t2, $t2, -48	#subtract 48 from $t2 to make it so that integer 0 is equivalent to 0
+	mult $t2, $t5		#multiply value in $t2 by exponent
+	mflo $t0	#add contents of special register $LO to $t0 
+	add $t6, $t6, $t0	#add value of $t0 to sum register ($t6)	
 	
 	lb $t2, 0($s1)			#load byte from stack (character) into $t2
 	li $t0, 32			#load 32 into $t0 to use to compare for space character
