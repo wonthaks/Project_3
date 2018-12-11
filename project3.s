@@ -185,6 +185,12 @@ calculateOutputMain:
 	lb $t2, 0($s1)			#load byte from stack (character) into $t2
 	li $t0, 10			#load 10 into $t0 to use to compare for lineFeed character (for base Case)
 	beq $t2, $t0, calculateOutputBaseHandle	#if $t2 is at lineFeed character, handle base case
+
+	li $t0, 97			#load 97 into $t0 to use to compare for valid character (uppercase)
+	blt $t2, $t0, calculateUpperCase	#branch to calculateLowerCase if current char > $t0
+calculateLowerCase:			#section of calculateOutputMain
+	lw $s1, 4($sp)		#load address pointer from stack into register $s1
+	lb $t2, 0($s1)		#load byte from stack into $t2
 	
 	lb $t2, 0($s1)			#load byte from stack (character) into $t2
 	li $t0, 32			#load 32 into $t0 to use to compare for space character
