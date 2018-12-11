@@ -210,7 +210,12 @@ calculateUpperCase:
 	lb $t2, 0($s1)		#load byte from stack into $t2
 	lw $t5, 0($sp)		#load exponent from stack into $t5
 	lw $t6, 8($sp)		#load sum from stack into $t6
-	addi $t2, $t2, -55	#subtract 55 from $t2 to make it so that uppercase A is equivalent to 10	
+	addi $t2, $t2, -55	#subtract 55 from $t2 to make it so that uppercase A is equivalent to 10
+	mult $t2, $t5		#multiply value in $t2 by exponent
+	mflo $t0	#add contents of special register $LO to $t0 
+	add $t6, $t6, $t0	#add value of $t0 to sum register ($t6)
+	li $t0, 28			#load 28 into $t0 to use to divide exponent
+	div $t5, $t0		#divide exponent by 28 ($t5 / $t0)	
 	
 	lb $t2, 0($s1)			#load byte from stack (character) into $t2
 	li $t0, 32			#load 32 into $t0 to use to compare for space character
