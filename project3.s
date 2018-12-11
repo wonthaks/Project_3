@@ -46,17 +46,17 @@ loopOne:
 	add $t8, $t8, $s2	#add invalid space length to total length
 	li $s2, 0			#reload 0 into invalid space length
 	li $s4, 1			#load 1 to $s4 to keep track of invalidity
-	jal loopOne			#and loop again
+	j loopOne			#and loop again
 
 checkSpaceBetween:
 	li $t0, 0			#load 0 into $t0 to compare with value stored in $t7 to see whether space is valid to skip or not
 	bgt $t7, $t0, incrementSpaceInvalid	#if value in $t7 is greater than 0, then branch to incrementSpaceInvalid
-	jal loopOne			#else, go back to original loop (space character skipped)
+	j loopOne			#else, go back to original loop (space character skipped)
 
 incrementSpaceInvalid:
 	addi $s2, $s2, 1	#add 1 to invalid space length tracker
 	li $t3, 1			#load 1 into $t3 to keep track of whether the space was between characters
-	jal loopOne			#jump back to main loop
+	j loopOne			#jump back to main loop
 
 checkLength:
 	add $t8, $t8, $t4	#add invalid length to real length
@@ -68,7 +68,7 @@ checkLength:
 	beq $s4, $t0, handleInvalid		#if string is invalid, jump to handleInvalid
 	li $t0, 1			#load 1 into $t0 to check if spaces were in between characters (since length was less than 4 and more than 0)
 	beq $s3, $t0, handleInvalid		#if spaces were between characters and length is less than 4, branch to handleInvalid
-	jal calculateExponent			#else, jump to calculateExponent (which redirects to calculateOutput)
+	j calculateExponent			#else, jump to calculateExponent (which redirects to calculateOutput)
 
 checkValidLower:
 	li $t0, 4			#load 4 into $t0 to check for length of string
@@ -77,7 +77,7 @@ checkValidLower:
 	ble $t2, $t0, incrementLength	#if char is within range, branch to incrementLength
 	addi $t4, $t4, 1	#else, increment invalid count
 	li $s4, 1			#keep track of invalidity
-	jal loopOne			#then, go back to loop
+	j loopOne			#then, go back to loop
 
 checkValidUpper:
 	li $t0, 4			#load 4 into $t0 to check for length of string
@@ -86,7 +86,7 @@ checkValidUpper:
 	ble $t2, $t0, incrementLength	#if char is within range, branch to incrementLength
 	addi $t4, $t4, 1	#else, increment invalid count
 	li $s4, 1			#keep track of invalidity
-	jal loopOne			#then, go back to loop
+	j loopOne			#then, go back to loop
 
 checkValidInteger:
 	li $t0, 4			#load 4 into $t0 to check for length of string
@@ -95,7 +95,7 @@ checkValidInteger:
 	ble $t2, $t0, incrementLength	#if char is within range, branch to incrementLength
 	addi $t4, $t4, 1	#else, increment invalid count
 	li $s4, 1			#keep track of invalidity
-	jal loopOne			#then, go back to loop
+	j loopOne			#then, go back to loop
 
 incrementLength:
 	addi $t8, $t8, 1		#increment length by 1
@@ -105,29 +105,29 @@ incrementLength:
 incrementLengthPart2:
 	add $t8, $t8, $s2		#add invalid lengths to length of string
 	li $s2, 0				#reinitialize invalid space lengths to 0 again
-	jal loopOne				#go back to loopOne
+	j loopOne				#go back to loopOne
 
 invalidSpace:
 	li $s3, 1				#load 1 into $s3 to keep track of invalidity due to space
-	jal incrementLengthPart2		#jump back to incrementLengthPart2
+	j incrementLengthPart2		#jump back to incrementLengthPart2
 
 handleLonger:
 	li $v0, 4				#load 4 into $v0 to print out string
 	la $a0, long			#load address of string message into $a0
 	syscall					#print out string message
-	jal exit				#jump to exit
+	j exit				#jump to exit
 
 handleInvalid:
 	li $v0, 4				#load 4 into $v0 to print out string
 	la $a0, invalid			#load address of string message into $a0
 	syscall					#print out string message
-	jal exit				#jump to exit
+	j exit				#jump to exit
 
 handleEmpty:
 	li $v0, 4				#load 4 into $v0 to print out string
 	la $a0, empty			#load address of string message into $a0
 	syscall					#print out string message
-	jal exit				#jump to exit
+	j exit				#jump to exit
 
 calculateExponent:
 	li $t0, 1				#load 1 into $t0 to check whether length of string is one
@@ -138,7 +138,7 @@ calculateExponent:
 	addi $t8, $t8, -1			#decrement value in $t8
 	li $t0, 1					#load 0 into $t0 to use to compare with $t8 (length holder register)
 	bgt $t8, $t0, calculateExponent	#if $t8 is still greater than 0, loop again to calculate max exponent
-	jal calculateOutput
+	j calculateOutput
 
 calculateLowerCase:
 	addi $t2, $t2, -87	#subtract 87 from $t2 to make it so that lowercase a is equivalent to 10
@@ -148,7 +148,7 @@ calculateLowerCase:
 	li $t0, 28			#load 28 into $t0 to use to divide exponent
 	div $t5, $t0		#divide exponent by 28 ($t5 / $t0)
 	mflo $t5	#then, move contents of $LO (quotient) into $t5
-	jal calculateOutput	#then, jump back to calculateOutput loop
+	j calculateOutput	#then, jump back to calculateOutput loop
 
 calculateUpperCase:
 	addi $t2, $t2, -55	#subtract 55 from $t2 to make it so that uppercase A is equivalent to 10
@@ -158,7 +158,7 @@ calculateUpperCase:
 	li $t0, 28			#load 28 into $t0 to use to divide exponent
 	div $t5, $t0		#divide exponent by 28 ($t5 / $t0)
 	mflo $t5	#then, move contents of $LO (quotient) into $t5
-	jal calculateOutput	#then, jump back to calculateOutput loop
+	j calculateOutput	#then, jump back to calculateOutput loop
 
 calculateInteger:
 	addi $t2, $t2, -48	#subtract 48 from $t2 to make it so that integer 0 is equivalent to 0
@@ -168,7 +168,7 @@ calculateInteger:
 	li $t0, 28			#load 28 into $t0 to use to divide exponent
 	div $t5, $t0		#divide exponent by 28 ($t5 / $t0)
 	mflo $t5	#then, move contents of $LO (quotient) into $t5
-	jal calculateOutput	#then, jump back to calculateOutput loop
+	j calculateOutput	#then, jump back to calculateOutput loop
 
 calculateOutput:
 	addi $s1, $s1, 1		#increment stack pointer in $s1 
@@ -189,7 +189,7 @@ outputSum:
 	li $v0, 1		#to print out integer
 	add $a0, $t6, $zero		#move contents of sum register to $a0 to print sum after
 	syscall
-	jal exit		#jump to exit
+	j exit		#jump to exit
 	
 exit:
     li $v0, 10		#to end the script
