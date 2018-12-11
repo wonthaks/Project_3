@@ -235,47 +235,7 @@ calculateInteger:
 	div $t5, $t0		#divide exponent by 28 ($t5 / $t0)
 	mflo $t5	#then, move contents of $LO (quotient) into $t5
 	sw $t5, 0($sp)		#store exponent back into stack
-	sw $t6, 8($sp)		#store sum back into stack	
-	
-	lb $t2, 0($s1)			#load byte from stack (character) into $t2
-	li $t0, 32			#load 32 into $t0 to use to compare for space character
-	beq $t2, $t0, calculateOutput	#if $t2 contains a space character, go back to beginning of this loop
-	
-	li $t0, 97			#load 97 into $t7 to use to compare for valid character (uppercase)
-	bge $t2, $t0, calculateLowerCase	#branch to calculateLowerCase if  $t2 > $t0
-	li $t0, 65			#if previous statement did not execute, load 65 into $t0
-	bge $t2, $t0, calculateUpperCase	#branch to calculateUpperCase if  $t2 > $t0
-	li $t0, 48			#if again previous statement did not execute, load 48 into $t0
-	bge $t2, $t0, calculateInteger	#branch to calculateInteger if  $t2 > $t0
-	
-	beq $t2, $t9, outputSum		#if value in $t2 is 10, it is LineFeed so we can now branch to outputSum
-
-calculateLowerCase:
-	addi $t2, $t2, -87	#subtract 87 from $t2 to make it so that lowercase a is equivalent to 10
-	mult $t2, $t5		#multiply value in $t2 by exponent
-	mflo $t0	#add contents of special register $LO to $t0 
-	add $t6, $t6, $t0	#add value of $t0 to sum register ($t6)
-	li $t0, 28			#load 28 into $t0 to use to divide exponent
-	div $t5, $t0		#divide exponent by 28 ($t5 / $t0)
-	mflo $t5	#then, move contents of $LO (quotient) into $t5
-	j calculateOutput	#then, jump back to calculateOutput loop
-
-calculateUpperCase:
-	addi $t2, $t2, -55	#subtract 55 from $t2 to make it so that uppercase A is equivalent to 10
-	mult $t2, $t5		#multiply value in $t2 by exponent
-	mflo $t0	#add contents of special register $LO to $t0 
-	add $t6, $t6, $t0	#add value of $t0 to sum register ($t6)
-	li $t0, 28			#load 28 into $t0 to use to divide exponent
-	div $t5, $t0		#divide exponent by 28 ($t5 / $t0)
-	mflo $t5	#then, move contents of $LO (quotient) into $t5
-	j calculateOutput	#then, jump back to calculateOutput loop
-
-calculateInteger:
-	addi $t2, $t2, -48	#subtract 48 from $t2 to make it so that integer 0 is equivalent to 0
-	mult $t2, $t5		#multiply value in $t2 by exponent
-	mflo $t0	#add contents of special register $LO to $t0 
-	add $t6, $t6, $t0	#add value of $t0 to sum register ($t6)
-	li $t0, 28			#load 28 into $t0 to use to divide exponent
-	div $t5, $t0		#divide exponent by 28 ($t5 / $t0)
-	mflo $t5	#then, move contents of $LO (quotient) into $t5
-	j calculateOutput	#then, jump back to calculateOutput loop
+	sw $t6, 8($sp)		#store sum back into stack
+	jal calculateOutputMain	#then, jump back to calculateOutput loop
+endOfCal:	
+	jal calculateOutputMain		#call self subprogram again	
