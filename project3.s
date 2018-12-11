@@ -176,7 +176,11 @@ calculateExponentBaseHandle:		#base case handler for calculateExponent
 	jr $ra		#return to caller
 
 calculateOutput:
+	sw $ra, 12($sp)		#save real return address into stack
+calculateOutputMain:
+	lw $s1, 4($sp)		#load address pointer from stack into register $s1
 	addi $s1, $s1, 1		#increment stack pointer in $s1 
+
 	lb $t2, 0($s1)			#load byte from stack (character) into $t2
 	li $t0, 32			#load 32 into $t0 to use to compare for space character
 	beq $t2, $t0, calculateOutput	#if $t2 contains a space character, go back to beginning of this loop
