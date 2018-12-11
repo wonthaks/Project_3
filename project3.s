@@ -40,7 +40,7 @@ loopOne:
 	li $t0, 32			#load 32 into $t0 to use to compare for space character
 	beq $t2, $t0, checkSpaceBetween	#if $t2 contains a space character, branch to check whether it is okay to skip or not
 	
-	beq $t2, $t9, checkLength	#if the char is LineFeed, then input has ended (so branch to checkLength)
+	beq $t2, $t9, checkLengthAndCalculate	#if the char is LineFeed, then input has ended (so branch to checkLengthAndCalculate)
 	addi $t4, $t4, 1	#else, increment the invalid count
 	li $t7, 1			#indicate string has started	
 	add $t8, $t8, $s2	#add invalid space length to total length
@@ -58,7 +58,7 @@ incrementSpaceInvalid:
 	li $t3, 1			#load 1 into $t3 to keep track of whether the space was between characters
 	j loopOne			#jump back to main loop
 
-checkLength:
+checkLengthAndCalculate:
 	add $t8, $t8, $t4	#add invalid length to real length
 	li $t0, 4			#load 4 into $t0 to check for length of string
 	bgt $t8, $t0, handleLonger		#if length is longer than 4, branch to handleLonger
