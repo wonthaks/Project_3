@@ -156,6 +156,12 @@ exit:
     syscall
 
 calculateExponent:
+	sw $ra, 8($sp)			#save real return address into stack pointer
+calculateExponentMain:
+	li $t0, 1				#load 1 to compare string to
+	lw $t8, 0($sp)			#load length into $t8 register
+	beq $t8, $t0, calculateExponentBaseHandle		#if length of string is one, go back to return address
+	
 	li $t0, 1				#load 1 into $t0 to check whether length of string is one
 	beq $t8, $t0, calculateOutput		#if length of string is one, jump to calculateOutput
 	li $t0, 28				#load base-N number to $t0 to calculate exponent (in this case base-28)
