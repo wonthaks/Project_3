@@ -239,3 +239,6 @@ calculateInteger:
 	jal calculateOutputMain	#then, jump back to calculateOutput loop
 endOfCal:	
 	jal calculateOutputMain		#call self subprogram again	
+calculateOutputBaseHandle:
+	lw $ra, 12($sp)		#load real return address into $ra
+	jr $ra		#go back to caller
