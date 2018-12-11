@@ -205,7 +205,12 @@ calculateLowerCase:			#section of calculateOutputMain
 	jal calculateOutputMain	#then, jump back to calculateOutput loop
 calculateUpperCase:
 	li $t0, 65			#if previous statement did not execute, load 65 into $t0
-	blt $t2, $t0, calculateInteger	#branch to calculateUpperCase if current char > $t0	
+	blt $t2, $t0, calculateInteger	#branch to calculateUpperCase if current char > $t0
+	lw $s1, 4($sp)		#load address pointer from stack into register $s1
+	lb $t2, 0($s1)		#load byte from stack into $t2
+	lw $t5, 0($sp)		#load exponent from stack into $t5
+	lw $t6, 8($sp)		#load sum from stack into $t6
+	addi $t2, $t2, -55	#subtract 55 from $t2 to make it so that uppercase A is equivalent to 10	
 	
 	lb $t2, 0($s1)			#load byte from stack (character) into $t2
 	li $t0, 32			#load 32 into $t0 to use to compare for space character
