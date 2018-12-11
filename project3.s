@@ -80,6 +80,9 @@ checkLengthAndCalculate:
 	sw $t5, 0($sp)		#store exponent into stack
 	sw $s1, 4($sp)		#store address of head of string into stack
 	sw $t6, 8($sp)		#store sum into stack
+	jal calculateOutput		#calculate Output
+	lw $t6, 8($sp)		#load sum to output into register $t6
+	addi $sp, $sp, 16		#cancel space
 	
 	j calculateExponent			#else, jump to calculateExponent (which redirects to calculateOutput)
 
