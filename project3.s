@@ -84,7 +84,7 @@ checkLengthAndCalculate:
 	lw $t6, 8($sp)		#load sum to output into register $t6
 	addi $sp, $sp, 16		#cancel space
 	
-	j calculateExponent			#else, jump to calculateExponent (which redirects to calculateOutput)
+	j outputSum		#output sum and exit program
 
 checkValidLower:
 	li $t0, 4			#load 4 into $t0 to check for length of string
