@@ -129,6 +129,16 @@ handleEmpty:
 	syscall					#print out string message
 	j exit				#jump to exit
 
+outputSum:
+	li $v0, 1		#to print out integer
+	add $a0, $t6, $zero		#move contents of sum register to $a0 to print sum after
+	syscall
+	j exit		#jump to exit
+	
+exit:
+    li $v0, 10		#to end the script
+    syscall
+
 calculateExponent:
 	li $t0, 1				#load 1 into $t0 to check whether length of string is one
 	beq $t8, $t0, calculateOutput		#if length of string is one, jump to calculateOutput
@@ -139,6 +149,21 @@ calculateExponent:
 	li $t0, 1					#load 0 into $t0 to use to compare with $t8 (length holder register)
 	bgt $t8, $t0, calculateExponent	#if $t8 is still greater than 0, loop again to calculate max exponent
 	j calculateOutput
+
+calculateOutput:
+	addi $s1, $s1, 1		#increment stack pointer in $s1 
+	lb $t2, 0($s1)			#load byte from stack (character) into $t2
+	li $t0, 32			#load 32 into $t0 to use to compare for space character
+	beq $t2, $t0, calculateOutput	#if $t2 contains a space character, go back to beginning of this loop
+	
+	li $t0, 97			#load 97 into $t7 to use to compare for valid character (uppercase)
+	bge $t2, $t0, calculateLowerCase	#branch to calculateLowerCase if  $t2 > $t0
+	li $t0, 65			#if previous statement did not execute, load 65 into $t0
+	bge $t2, $t0, calculateUpperCase	#branch to calculateUpperCase if  $t2 > $t0
+	li $t0, 48			#if again previous statement did not execute, load 48 into $t0
+	bge $t2, $t0, calculateInteger	#branch to calculateInteger if  $t2 > $t0
+	
+	beq $t2, $t9, outputSum		#if value in $t2 is 10, it is LineFeed so we can now branch to outputSum
 
 calculateLowerCase:
 	addi $t2, $t2, -87	#subtract 87 from $t2 to make it so that lowercase a is equivalent to 10
@@ -169,28 +194,3 @@ calculateInteger:
 	div $t5, $t0		#divide exponent by 28 ($t5 / $t0)
 	mflo $t5	#then, move contents of $LO (quotient) into $t5
 	j calculateOutput	#then, jump back to calculateOutput loop
-
-calculateOutput:
-	addi $s1, $s1, 1		#increment stack pointer in $s1 
-	lb $t2, 0($s1)			#load byte from stack (character) into $t2
-	li $t0, 32			#load 32 into $t0 to use to compare for space character
-	beq $t2, $t0, calculateOutput	#if $t2 contains a space character, go back to beginning of this loop
-	
-	li $t0, 97			#load 97 into $t7 to use to compare for valid character (uppercase)
-	bge $t2, $t0, calculateLowerCase	#branch to calculateLowerCase if  $t2 > $t0
-	li $t0, 65			#if previous statement did not execute, load 65 into $t0
-	bge $t2, $t0, calculateUpperCase	#branch to calculateUpperCase if  $t2 > $t0
-	li $t0, 48			#if again previous statement did not execute, load 48 into $t0
-	bge $t2, $t0, calculateInteger	#branch to calculateInteger if  $t2 > $t0
-	
-	beq $t2, $t9, outputSum		#if value in $t2 is 10, it is LineFeed so we can now branch to outputSum
-
-outputSum:
-	li $v0, 1		#to print out integer
-	add $a0, $t6, $zero		#move contents of sum register to $a0 to print sum after
-	syscall
-	j exit		#jump to exit
-	
-exit:
-    li $v0, 10		#to end the script
-    syscall
