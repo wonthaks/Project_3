@@ -169,8 +169,9 @@ calculateExponentMain:
 	sw $t5, 4($sp)		#save exponent back into stack
 	
 	addi $t8, $t8, -1			#decrement value in $t8
-	li $t0, 1					#load 0 into $t0 to use to compare with $t8 (length holder register)
-	bgt $t8, $t0, calculateExponent	#if $t8 is still greater than 0, loop again to calculate max exponent
+	sw $t8, 0($sp)			#save length back into stack
+	jal calculateExponentMain	#call back self subprogram to continue calculating exponent
+	
 	j calculateOutput
 
 calculateOutput:
