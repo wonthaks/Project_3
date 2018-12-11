@@ -181,6 +181,11 @@ calculateOutputMain:
 	lw $s1, 4($sp)		#load address pointer from stack into register $s1
 	addi $s1, $s1, 1		#increment stack pointer in $s1 
 
+	sw $s1, 4($sp)		#save address pointer back into stack
+	lb $t2, 0($s1)			#load byte from stack (character) into $t2
+	li $t0, 10			#load 10 into $t0 to use to compare for lineFeed character (for base Case)
+	beq $t2, $t0, calculateOutputBaseHandle	#if $t2 is at lineFeed character, handle base case
+	
 	lb $t2, 0($s1)			#load byte from stack (character) into $t2
 	li $t0, 32			#load 32 into $t0 to use to compare for space character
 	beq $t2, $t0, calculateOutput	#if $t2 contains a space character, go back to beginning of this loop
