@@ -85,13 +85,9 @@ checkLengthAndCalculate:
 	sw $a1, 4($sp)			#$a0 = exponent, $a1 = stack pointer
 	jal calculateOutput		#calculate Output
 	add $t6, $v0, $zero		#copy sum (return value) from return register to $t6
-	
-	jal calculateOutput		#calculate Output
-	lw $t6, 8($sp)		#load sum to output into register $t6
-	addi $sp, $sp, 16		#cancel space
-	
+	addi $sp, $sp, 12		#cancel space
 	j outputSum		#output sum and exit program
-
+	
 checkValidLower:
 	li $t0, 4			#load 4 into $t0 to check for length of string
 	bgt $t8, $t0, handleLonger		#if length is longer than 4, branch to handleLonger
