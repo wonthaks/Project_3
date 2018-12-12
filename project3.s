@@ -226,6 +226,11 @@ calculateInteger:
 	addi $t2, $t2, -48	#subtract 48 from $t2 to make it so that integer 0 is equal to 0
 	mult $t2, $a0		#multiply value in $t2 by exponent
 	mflo $t0			#move result into temp register
+	add $v0, $v0, $t0	#add result into return register
+	jr $ra	#return
+endOfCal:
+	li $t0, 28			#to restore exponent because spaces are ignored
+	mult $a0, $t0		#multiply exponent by 28
 	
 
 	sw $s1, 4($sp)		#save address pointer back into stack
