@@ -175,21 +175,6 @@ calculateExponentMain:
 	mult $t0, $v0			#multiply current exponent to return with 28
 	mflo $v0				#store result in $v0
 	jr $ra
-	
-	beq $t8, $t0, calculateExponentBaseHandle		#if length of string is one, go back to return address
-	
-	li $t0, 28				#load base-N number to $t0 to calculate exponent (in this case base-28)
-	lw $t5, 4($sp)		#load exponent into $t5
-	mult $t5, $t0			#multiply current exponent in stack with $t0 to get next
-	mflo $t5	#move whatever is stored now in special register $LO into stack (exponent holder place)
-	sw $t5, 4($sp)		#save exponent back into stack
-	
-	addi $t8, $t8, -1			#decrement value in $t8
-	sw $t8, 0($sp)			#save length back into stack
-	jal calculateExponentMain	#call back self subprogram to continue calculating exponent
-calculateExponentBaseHandle:		#base case handler for calculateExponent
-	lw $ra, 8($sp)			#load real return address back to checkLengthAndCalculate
-	jr $ra		#return to caller
 
 calculateOutput:
 	sw $ra, 12($sp)		#save real return address into stack
