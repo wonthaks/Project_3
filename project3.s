@@ -186,6 +186,11 @@ calculateOutput:
 	beq $t2, $t0, ignoreSpace	#ignore space if it is, else move on
 	li $t0, 10			#load 10 into $t0 to use to compare for lineFeed character
 	lb $t1, 0($a1)		#load character from string stack pointer into $t1
+	bne $t1, $t0, calculateOutputMain	#if current character is not lineFeed character, go to calculateOutputMain
+	addi $sp, $sp, 12	#cancel space
+	jr $ra				#return
+ignoreSpace:
+	addi $a1, $a1, 1	#increment stack pointer for string
 
 	sw $s1, 4($sp)		#save address pointer back into stack
 	lb $t2, 0($s1)			#load byte from stack (character) into $t2
