@@ -201,6 +201,12 @@ calculateOutputMain:
 	jal calculateOutput	#recursive call
 	lw $a0, 0($sp)		#restore original argument (exponent)
 	lw $a1, 4($sp)		#restore original argumetn (stack pointer for string)
+	lw $ra, 8($sp)		#restore return address
+	addi $sp, $sp, 12	#cancel space
+	li $t0, 97			#load 97 into $t0 to use to compare for valid lowercase character
+	lb $t2, 0($a1)		#load byte from string stack pointer
+	blt $t2, $t0, calculateUpperCase	#if current char is less than 97, it cannot be lowercase character
+	
 
 	sw $s1, 4($sp)		#save address pointer back into stack
 	lb $t2, 0($s1)			#load byte from stack (character) into $t2
