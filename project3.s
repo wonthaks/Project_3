@@ -221,6 +221,11 @@ calculateUpperCase:
 	add $v0, $v0, $t0	#add result into return register
 	jr $ra	#return
 calculateInteger:
+	li $t0, 48			#load 48 into $t0
+	blt $t2, $t0, endOfCal		#if current char is less than 48, it cannot be integer
+	addi $t2, $t2, -48	#subtract 48 from $t2 to make it so that integer 0 is equal to 0
+	mult $t2, $a0		#multiply value in $t2 by exponent
+	mflo $t0			#move result into temp register
 	
 
 	sw $s1, 4($sp)		#save address pointer back into stack
