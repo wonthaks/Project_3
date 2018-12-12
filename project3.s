@@ -191,6 +191,12 @@ calculateOutput:
 	jr $ra				#return
 ignoreSpace:
 	addi $a1, $a1, 1	#increment stack pointer for string
+	addi $sp, $sp, 12	#cancel space
+	j calculateOutput	#ignore space and return to beginning of subprogram (this instance)
+calculateOutputMain:
+	addi $a1, $a1, 1	#increment stack pointer to get next character
+	li $t0, 28			#load 28 into $t0 to use to divide exponent
+	
 
 	sw $s1, 4($sp)		#save address pointer back into stack
 	lb $t2, 0($s1)			#load byte from stack (character) into $t2
