@@ -96,6 +96,8 @@ checkValidLower:
 	ble $t2, $t0, incrementLength	#if char is within range, branch to incrementLength
 	addi $t4, $t4, 1	#else, increment invalid count
 	li $s4, 1			#keep track of invalidity
+	add $t8, $t8, $s2	#add invalid space length to total length
+	li $s2, 0			#reload 0 into invalid space length
 	j loopOne			#then, go back to loop
 
 checkValidUpper:
@@ -105,6 +107,8 @@ checkValidUpper:
 	ble $t2, $t0, incrementLength	#if char is within range, branch to incrementLength
 	addi $t4, $t4, 1	#else, increment invalid count
 	li $s4, 1			#keep track of invalidity
+	add $t8, $t8, $s2	#add invalid space length to total length
+	li $s2, 0			#reload 0 into invalid space length
 	j loopOne			#then, go back to loop
 
 checkValidInteger:
@@ -114,6 +118,7 @@ checkValidInteger:
 	ble $t2, $t0, incrementLength	#if char is within range, branch to incrementLength
 	addi $t4, $t4, 1	#else, increment invalid count
 	li $s4, 1			#keep track of invalidity
+	
 	j loopOne			#then, go back to loop
 
 incrementLength:
