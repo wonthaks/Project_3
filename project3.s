@@ -177,10 +177,10 @@ calculateExponentMain:
 	jr $ra
 
 calculateOutput:
-	sw $ra, 12($sp)		#save real return address into stack
-calculateOutputMain:
-	lw $s1, 4($sp)		#load address pointer from stack into register $s1
-	addi $s1, $s1, 1		#increment stack pointer in $s1 
+	addi $sp, $sp, -12	#make space for values to store
+	sw $ra, 8($sp)		#save return address into stack pointer
+	sw $a1, 4($sp)		#save argument (stack pointer for string)
+	sw $a0, 0($sp)		#save argument (exponent)
 
 	sw $s1, 4($sp)		#save address pointer back into stack
 	lb $t2, 0($s1)			#load byte from stack (character) into $t2
