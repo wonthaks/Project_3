@@ -167,6 +167,11 @@ calculateExponent:
 	jr $ra			#return
 calculateExponentMain:
 	addi $a0, $a0, -1		#decrement $a0 by 1 (length - 1)
+	jal calculateExponent	#recursive call
+	lw $a0, 0($sp)			#restore original argument
+	lw $ra, 4($sp)			#restore return address
+	addi $sp, $sp, 8		#cancel space
+	li $t0, 28				#load 28 into $t0 to use
 	
 	beq $t8, $t0, calculateExponentBaseHandle		#if length of string is one, go back to return address
 	
