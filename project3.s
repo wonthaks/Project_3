@@ -23,6 +23,7 @@ main:
 	li $s4, 0			#register to track whether invalids were found
 	addi $s0, $s0, -1	#decrement stack pointer by 1 to account for loop after
 	add $s1, $s0, $zero	#copy contents from $s0 into $s1 to use to calculate output later on
+	addi $s1, $s1, 1	#increment stack pointer by 1 to use in after loop
 
 loopOne:
 	addi $s0, $s0, 1	#add 1 to $s0 to increment stack pointer
