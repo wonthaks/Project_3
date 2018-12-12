@@ -181,6 +181,11 @@ calculateOutput:
 	sw $ra, 8($sp)		#save return address into stack pointer
 	sw $a1, 4($sp)		#save argument (stack pointer for string)
 	sw $a0, 0($sp)		#save argument (exponent)
+	li $t0, 32			#load 32 into $t0 to use to compare for space character
+	lb $t2, 0($a1)		#load current char to use to compare
+	beq $t2, $t0, ignoreSpace	#ignore space if it is, else move on
+	li $t0, 10			#load 10 into $t0 to use to compare for lineFeed character
+	lb $t1, 0($a1)		#load character from string stack pointer into $t1
 
 	sw $s1, 4($sp)		#save address pointer back into stack
 	lb $t2, 0($s1)			#load byte from stack (character) into $t2
