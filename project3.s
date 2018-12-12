@@ -211,6 +211,11 @@ calculateLowerCase:
 	mult $t2, $a0		#multiply value in $t2 by exponent
 	mflo $t0			#move result into temp register
 	add $v0, $v0, $t0	#add result into return register
+	jr $ra	#return
+calculateUpperCase:
+	li $t0, 65			#load 65 into $t0 to use to compare for uppercase char
+	blt $t2, $t0, calculateInteger		#if current char is less than 65, it cannot be uppercase character
+	addi $t2, $t2, -55	#subtract 55 from $t2 to make it so that uppercase A is equal to 10
 	
 
 	sw $s1, 4($sp)		#save address pointer back into stack
