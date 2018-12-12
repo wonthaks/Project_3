@@ -74,13 +74,13 @@ checkLengthAndCalculate:
 	add $a0, $t8, $zero			#argument is length of valid string
 	sw $a0, 0($sp)		#store length of string as parameter to pass in
 	jal calculateExponent			#else, jump to subprogram calculateExponent (which redirects to calculateOutput)
+	add $t5, $v0, $zero		#copy exponent from $v0 to $t5
+	addi $sp, $sp, 8		#increment stack pointer to cancel space
 	
-	addi $sp, $sp, 12		#increment stack pointer to cancel space
+	addi $sp, $sp, -12		#decrement stack pointer to store exponent value and output value
+	add $v0, $t6, $zero		#copy sum to return into return register ($v0)
+	add $a0, $t5, $zero		#copy exponent into argument register ($a0)
 	
-	addi $sp, $sp, -16		#decrement stack pointer to store exponent value and output value
-	sw $t5, 0($sp)		#store exponent into stack
-	sw $s1, 4($sp)		#store address of head of string into stack
-	sw $t6, 8($sp)		#store sum into stack
 	jal calculateOutput		#calculate Output
 	lw $t6, 8($sp)		#load sum to output into register $t6
 	addi $sp, $sp, 16		#cancel space
