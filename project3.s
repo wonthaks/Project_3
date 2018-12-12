@@ -80,6 +80,11 @@ checkLengthAndCalculate:
 	addi $sp, $sp, -12		#decrement stack pointer to store exponent value and output value
 	add $v0, $t6, $zero		#copy sum to return into return register ($v0)
 	add $a0, $t5, $zero		#copy exponent into argument register ($a0)
+	add $a1, $s1, $zero		#copy stack pointer to use to get valid characters from string to calculate
+	sw $a0, 0($sp)			#save arguments to use in recursive function
+	sw $a1, 4($sp)			#$a0 = exponent, $a1 = stack pointer
+	jal calculateOutput		#calculate Output
+	add $t6, $v0, $zero		#copy sum (return value) from return register to $t6
 	
 	jal calculateOutput		#calculate Output
 	lw $t6, 8($sp)		#load sum to output into register $t6
