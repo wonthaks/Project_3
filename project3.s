@@ -162,7 +162,11 @@ calculateExponent:
 	sw $ra, 4($sp)			#save return address into stack pointer
 	sw $a0, 0($sp)			#save argument (length)
 	li $t0, 1				#store 1 in $t0 to compare with
-	
+	bne	$t0, $a0, calculateExponentMain		#if length is not 1, go to recursive part of subprogram
+	addi $sp, $sp, 8		#if length is 1, cancel space
+	jr $ra			#return
+calculateExponentMain:
+	addi $a0, $a0, -1		#decrement $a0 by 1 (length - 1)
 	
 	beq $t8, $t0, calculateExponentBaseHandle		#if length of string is one, go back to return address
 	
