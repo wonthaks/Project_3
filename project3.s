@@ -172,6 +172,9 @@ calculateExponentMain:
 	lw $ra, 4($sp)			#restore return address
 	addi $sp, $sp, 8		#cancel space
 	li $t0, 28				#load 28 into $t0 to use
+	mult $t0, $v0			#multiply current exponent to return with 28
+	mflo $v0				#store result in $v0
+	jr $ra
 	
 	beq $t8, $t0, calculateExponentBaseHandle		#if length of string is one, go back to return address
 	
