@@ -174,19 +174,21 @@ exit:
     syscall
 
 calculateExponent:
-	addi $sp, $sp, -8 		#make space for values to store
+	addi $sp, $sp, -12		#make space for values to store
+	sw $v0, 8($sp)			#save return value into stack
 	sw $ra, 4($sp)			#save return address into stack pointer
 	sw $a0, 0($sp)			#save argument (length)
 	li $t0, 1				#store 1 in $t0 to compare with
 	bne	$t0, $a0, calculateExponentMain		#if length is not 1, go to recursive part of subprogram
-	addi $sp, $sp, 8		#if length is 1, cancel space
+	addi $sp, $sp, 12		#if length is 1, cancel space
 	jr $ra			#return
 calculateExponentMain:
 	addi $a0, $a0, -1		#decrement $a0 by 1 (length - 1)
 	jal calculateExponent	#recursive call
+	lw $v0, 8($sp)			#restore original argument
 	lw $a0, 0($sp)			#restore original argument
 	lw $ra, 4($sp)			#restore return address
-	addi $sp, $sp, 8		#cancel space
+	addi $sp, $sp, 12		#cancel space
 	li $t0, 28				#load 28 into $t0 to use
 	mult $t0, $v0			#multiply current exponent to return with 28
 	mflo $v0				#store result in $v0
