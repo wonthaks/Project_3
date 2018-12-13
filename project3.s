@@ -77,9 +77,9 @@ checkLengthAndCalculate:
 	sw $v0, 8($sp)		#save return register into stack before calling subprogram
 	sw $a0, 0($sp)		#store length of string as parameter to pass in
 	jal calculateExponent			#else, jump to subprogram calculateExponent (which redirects to calculateOutput)
-	lw $v0, 8($sp)		#load register into stack
+	lw $v0, 8($sp)		#load register into $v0
 	add $t5, $v0, $zero		#copy exponent from $v0 to $t5
-	addi $sp, $sp, 8		#increment stack pointer to cancel space
+	addi $sp, $sp, 12		#increment stack pointer to cancel space
 	
 	addi $sp, $sp, -16		#decrement stack pointer to store exponent value and output value
 	add $v0, $t6, $zero		#copy sum to return into return register ($v0)
@@ -90,8 +90,9 @@ checkLengthAndCalculate:
 	sw $a0, 0($sp)			#save arguments to use in recursive function
 	sw $a1, 4($sp)			#$a0 = exponent, $a1 = stack pointer
 	jal calculateOutput		#calculate Output
+	lw $v0, 12($sp)			#load return register into $v0
 	add $t6, $v0, $zero		#copy sum (return value) from return register to $t6
-	addi $sp, $sp, 12		#cancel space
+	addi $sp, $sp, 16		#cancel space
 	j outputSum		#output sum and exit program
 	
 checkValidLower:
