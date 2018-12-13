@@ -70,18 +70,23 @@ checkLengthAndCalculate:
 	li $t0, 1			#load 1 into $t0 to check if spaces were in between characters (since length was less than 4 and more than 0)
 	beq $s3, $t0, handleInvalid		#if spaces were between characters and length is less than 4, branch to handleInvalid
 	
-	addi $sp, $sp, -8 			#decrement stack pointer to use to store exponent value to use and length as parameter
+	addi $sp, $sp, -12 			#decrement stack pointer to use to store exponent value to use and length as parameter
 	add $v0, $t5, $zero			#return register for recursive function that holds exponent
 	add $a0, $t8, $zero			#argument is length of valid string
+	li $v0, 0			#load zero into return register
+	sw $v0, 8($sp)		#save return register into stack before calling subprogram
 	sw $a0, 0($sp)		#store length of string as parameter to pass in
 	jal calculateExponent			#else, jump to subprogram calculateExponent (which redirects to calculateOutput)
+	lw $v0, 8($sp)		#load register into stack
 	add $t5, $v0, $zero		#copy exponent from $v0 to $t5
 	addi $sp, $sp, 8		#increment stack pointer to cancel space
 	
-	addi $sp, $sp, -12		#decrement stack pointer to store exponent value and output value
+	addi $sp, $sp, -16		#decrement stack pointer to store exponent value and output value
 	add $v0, $t6, $zero		#copy sum to return into return register ($v0)
 	add $a0, $t5, $zero		#copy exponent into argument register ($a0)
 	add $a1, $s1, $zero		#copy stack pointer to use to get valid characters from string to calculate
+	li $v0, 0				#load zero into return register
+	sw $v0, 12($sp)			#save return value into stack before calling subprogram
 	sw $a0, 0($sp)			#save arguments to use in recursive function
 	sw $a1, 4($sp)			#$a0 = exponent, $a1 = stack pointer
 	jal calculateOutput		#calculate Output
