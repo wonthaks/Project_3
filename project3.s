@@ -196,6 +196,7 @@ calculateExponentMain:
 
 calculateOutput:
 	addi $sp, $sp, -16	#make space for values to store
+	sw $v0, 12($sp)		#save return value to stack
 	sw $ra, 8($sp)		#save return address into stack pointer
 	sw $a1, 4($sp)		#save argument (stack pointer for string)
 	sw $a0, 0($sp)		#save argument (exponent)
@@ -220,6 +221,7 @@ calculateOutputMain:
 	lw $a0, 0($sp)		#restore original argument (exponent)
 	lw $a1, 4($sp)		#restore original argument (stack pointer for string)
 	lw $ra, 8($sp)		#restore return address
+	lw $v0, 12($sp)		#restore return value
 	addi $sp, $sp, 16	#cancel space
 	li $t0, 97			#load 97 into $t0 to use to compare for valid lowercase character
 	lb $t2, 0($a1)		#load byte from string stack pointer
