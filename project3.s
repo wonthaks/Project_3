@@ -195,7 +195,7 @@ calculateExponentMain:
 	jr $ra
 
 calculateOutput:
-	addi $sp, $sp, -12	#make space for values to store
+	addi $sp, $sp, -16	#make space for values to store
 	sw $ra, 8($sp)		#save return address into stack pointer
 	sw $a1, 4($sp)		#save argument (stack pointer for string)
 	sw $a0, 0($sp)		#save argument (exponent)
@@ -205,11 +205,11 @@ calculateOutput:
 	li $t0, 10			#load 10 into $t0 to use to compare for lineFeed character
 	lb $t1, 0($a1)		#load character from string stack pointer into $t1
 	bne $t1, $t0, calculateOutputMain	#if current character is not lineFeed character, go to calculateOutputMain
-	addi $sp, $sp, 12	#cancel space
+	addi $sp, $sp, 16	#cancel space
 	jr $ra				#return
 ignoreSpace:
 	addi $a1, $a1, 1	#increment stack pointer for string
-	addi $sp, $sp, 12	#cancel space
+	addi $sp, $sp, 16	#cancel space
 	j calculateOutput	#ignore space and return to beginning of subprogram (this instance)
 calculateOutputMain:
 	addi $a1, $a1, 1	#increment stack pointer to get next character
@@ -220,7 +220,7 @@ calculateOutputMain:
 	lw $a0, 0($sp)		#restore original argument (exponent)
 	lw $a1, 4($sp)		#restore original argument (stack pointer for string)
 	lw $ra, 8($sp)		#restore return address
-	addi $sp, $sp, 12	#cancel space
+	addi $sp, $sp, 16	#cancel space
 	li $t0, 97			#load 97 into $t0 to use to compare for valid lowercase character
 	lb $t2, 0($a1)		#load byte from string stack pointer
 	blt $t2, $t0, calculateUpperCase	#if current char is less than 97, it cannot be lowercase character
