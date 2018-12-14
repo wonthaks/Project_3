@@ -73,7 +73,7 @@ checkLengthAndCalculate:
 	addi $sp, $sp, -12 			#decrement stack pointer to use to store exponent value to use and length as parameter
 	add $v0, $t5, $zero			#return register for recursive function that holds exponent
 	add $a0, $t8, $zero			#argument is length of valid string
-	li $v0, 0			#load zero into return register
+	li $v0, 1			#load one (exponent) into return register
 	sw $v0, 8($sp)		#save return register into stack before calling subprogram
 	sw $a0, 0($sp)		#store length of string as parameter to pass in
 	jal calculateExponent			#else, jump to subprogram calculateExponent (which redirects to calculateOutput)
@@ -192,6 +192,7 @@ calculateExponentMain:
 	li $t0, 28				#load 28 into $t0 to use
 	mult $t0, $v0			#multiply current exponent to return with 28
 	mflo $v0				#store result in $v0
+	sw $v0, 8($sp)
 	jr $ra
 
 calculateOutput:
@@ -231,6 +232,7 @@ calculateLowerCase:
 	mult $t2, $a0		#multiply value in $t2 by exponent
 	mflo $t0			#move result into temp register
 	add $v0, $v0, $t0	#add result into return register
+	sw $v0, 12($sp)		#save return value into stack
 	jr $ra	#return
 calculateUpperCase:
 	li $t0, 65			#load 65 into $t0 to use to compare for uppercase char
@@ -239,6 +241,7 @@ calculateUpperCase:
 	mult $t2, $a0		#multiply value in $t2 by exponent
 	mflo $t0			#move result into temp register
 	add $v0, $v0, $t0	#add result into return register
+	sw $v0, 12($sp)		#save return value into stack
 	jr $ra	#return
 calculateInteger:
 	li $t0, 48			#load 48 into $t0
@@ -247,6 +250,7 @@ calculateInteger:
 	mult $t2, $a0		#multiply value in $t2 by exponent
 	mflo $t0			#move result into temp register
 	add $v0, $v0, $t0	#add result into return register
+	sw $v0, 12($sp)		#save return value into stack
 	jr $ra	#return
 endOfCal:
 	li $t0, 28			#to restore exponent because spaces are ignored
